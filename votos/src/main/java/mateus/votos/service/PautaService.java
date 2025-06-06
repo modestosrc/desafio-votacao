@@ -1,13 +1,13 @@
 package mateus.votos.service;
 
-import mateus.votos.dto.PautaDTO;
-import mateus.votos.model.Pauta;
-import mateus.votos.repository.PautaRepository;
+import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import mateus.votos.dto.PautaDTO;
+import mateus.votos.model.Pauta;
+import mateus.votos.repository.PautaRepository;
 
 @Service
 public class PautaService {
