@@ -11,9 +11,9 @@ $ ./mvnw spring-boot:run
 ```
 
 ## Testando a aplicação
-Para testar a aplicação, você pode usar o Swagger UI, que está disponível em:
-![Swagger UI](http://localhost:8080/swagger-ui/index.html)
-** Com o app em execução, acesse o Swagger UI no navegador. **
+Para testar a aplicação, você pode usar o Swagger UI, que está disponível durante a execução da aplicação.
+
+http://localhost:8080/swagger-ui/index.html
 
 Ou usar:
 ```bash
