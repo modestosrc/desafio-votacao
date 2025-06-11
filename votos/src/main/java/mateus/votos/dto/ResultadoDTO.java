@@ -1,17 +1,17 @@
 package mateus.votos.dto;
 
 public class ResultadoDTO {
-    private int idPauta;
+    private Long idPauta;
     private int votosSim;
     private int votosNao;
 
-    public ResultadoDTO(int idPauta, int votosSim, int votosNao) {
+    public ResultadoDTO(Long idPauta, int votosSim, int votosNao) {
         this.idPauta = idPauta;
         this.votosSim = votosSim;
         this.votosNao = votosNao;
     }
 
-    public int getIdPauta() {
+    public Long getIdPauta() {
         return idPauta;
     }
 
