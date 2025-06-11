@@ -1,6 +1,13 @@
 package mateus.votos.model;
 
+/**
+ * Representa um voto no sistema de votação.
+ *
+ * Contém informações como o ID do voto, CPF do votante, ID da pauta associada e o voto em si.
+ * E seus respectivos métodos de acesso e modificação.
+ */
 public class Voto {
+    // NOTE: O id é gerado pelo banco de dados
     private Long id;
     private String cpf;
     private Long idPauta;
@@ -15,10 +22,6 @@ public class Voto {
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getCpf() {

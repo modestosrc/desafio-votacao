@@ -12,18 +12,22 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import mateus.votos.dto.PautaDTO;
 import mateus.votos.model.Pauta;
 import mateus.votos.service.PautaService;
 
 @RestController
 @RequestMapping("/pautas")
+@Tag(name = "Pautas", description = "Endpoints for managing pautas")
 public class PautaController {
 
     @Autowired
     private PautaService pautaService;
 
     @PostMapping
+    @Operation(summary = "Create a new pauta", description = "Creates a new pauta with the provided details")
     public ResponseEntity<?> createPauta(@RequestBody PautaDTO pautaDTO) {
         try {
             return ResponseEntity.status(HttpStatus.CREATED).body(pautaService.createPauta(pautaDTO));
@@ -34,6 +38,7 @@ public class PautaController {
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Get pauta by ID", description = "Retrieves a pauta by its ID")
     public ResponseEntity<?> getPautaById(@PathVariable Long id) {
         try {
             return ResponseEntity.ok(pautaService.getPautaById(id));
@@ -43,6 +48,7 @@ public class PautaController {
     }
 
     @GetMapping
+    @Operation(summary = "Get all pautas", description = "Retrieves a list of all pautas")
     public ResponseEntity<?> getAllPautas() {
         try {
             return ResponseEntity.ok(pautaService.getPautaAll());
@@ -53,6 +59,7 @@ public class PautaController {
     }
 
     @PutMapping("/{id}")
+    @Operation(summary = "Update a pauta", description = "Updates an existing pauta with the provided details")
     public ResponseEntity<?> updatePauta(@PathVariable Long id, @RequestBody PautaDTO pautaDTO) {
         try {
             Pauta updatedPauta = pautaService
@@ -65,6 +72,7 @@ public class PautaController {
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Delete a pauta", description = "Deletes a pauta by its ID")
     public ResponseEntity<?> deletePauta(@PathVariable Long id) {
         try {
             pautaService.deletePauta(id);

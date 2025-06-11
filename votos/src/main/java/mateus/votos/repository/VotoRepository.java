@@ -12,14 +12,21 @@ import java.sql.SQLException;
 
 import org.springframework.stereotype.Repository;
 
-// Não precisamos mais do que isso para o repositório de votos, jã que os
-// resultados serão obtidos atraves de outro serviço.
+/**
+ * Repositório para gerenciar as operações de persistência relacionadas ao Voto.
+ *
+ * Este repositório utiliza JDBC para interagir com um banco de dados SQLite.
+ */
 @Repository
 public class VotoRepository {
 
     private Connection connection;
     private PreparedStatement preparedStatement;
 
+    /**
+     * Construtor para inicializar a conexão com o banco de dados e criar a
+     * tabela voto se não existir.
+     */
     public VotoRepository() {
         try {
             this.connection = DriverManager.getConnection("jdbc:sqlite:src/main/resources/votos.db");
@@ -29,6 +36,11 @@ public class VotoRepository {
         }
     }
 
+    /**
+     * Cria a tabela voto no banco de dados se ela não existir.
+     *
+     * @throws SQLException Caso ocorra um erro ao executar a criação da tabela.
+     */
     private void createTable() throws SQLException {
         String sql = "CREATE TABLE IF NOT EXISTS voto (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -40,6 +52,14 @@ public class VotoRepository {
         preparedStatement.executeUpdate();
     }
 
+    /**
+     * Insere um novo Voto no banco de dados.
+     *
+     * @param votoDTO O objeto VotoDTO contendo os detalhes do voto a ser salvo.
+     * @return O objeto Voto com os detalhes inseridos, incluindo o ID gerado pelo
+     *         banco de dados.
+     * @throws Exception Se já existir um voto para o mesmo CPF e Pauta ID.
+     */
     public Voto save(VotoDTO votoDTO) throws Exception {
         // Garantir que o voto não exista para o mesmo CPF e Pauta ID
         if (findByCpfAndPauta(votoDTO.getCpf(), votoDTO.getIdPauta()) != null) {
@@ -62,6 +82,14 @@ public class VotoRepository {
         }
     }
 
+    /**
+     * Busca um voto pelo CPF e ID da Pauta.
+     *
+     * @param cpf     O CPF do votante.
+     * @param idPauta O ID da pauta.
+     * @return O objeto Voto correspondente ou null se não encontrado.
+     * @throws SQLException Se ocorrer um erro ao executar a consulta.
+     */
     public Voto findByCpfAndPauta(String cpf, Long idPauta) throws SQLException {
         String sql = "SELECT * FROM voto WHERE cpf = ? AND id_pauta = ?";
         preparedStatement = connection.prepareStatement(sql);

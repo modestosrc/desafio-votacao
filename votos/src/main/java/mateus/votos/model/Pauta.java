@@ -2,7 +2,14 @@ package mateus.votos.model;
 
 import mateus.votos.dto.PautaDTO;
 
+/**
+ * Representa uma pauta no sistema de votação.
+ *
+ * Contém informações como nome, conteúdo e status da pauta.
+ * E seus respectivos métodos de acesso e modificação.
+ */
 public class Pauta {
+    // NOTE: O id é gerado pelo banco de dados
     private Long id;
     private String name;
     private String content;
@@ -17,10 +24,6 @@ public class Pauta {
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getName() {

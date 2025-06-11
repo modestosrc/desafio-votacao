@@ -1,7 +1,8 @@
 package mateus.votos.exception;
 
-// Crio essa exceção para indicar que um recurso já existe, para que o endpoint
-// possa retornar a resposta correta para o usuário.
+/**
+ * Uma exceção para indicar que um recurso já existe.
+ */
 public class AlreadyExistsException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 

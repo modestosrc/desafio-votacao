@@ -1,8 +1,13 @@
 package mateus.votos.model;
 
-import mateus.votos.dto.SessaoDTO;
-
+/**
+ * Representa uma sessão de votação no sistema.
+ *
+ * Contém informações como o ID da pauta associada, data de início e data de fim da sessão.
+ * E seus respectivos métodos de acesso e modificação.
+ */
 public class Sessao {
+    // NOTE: O id é gerado pelo banco de dados
     private Long id;
     private Long idPauta;
     private String dataInicio;
@@ -17,10 +22,6 @@ public class Sessao {
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public Long getIdPauta() {

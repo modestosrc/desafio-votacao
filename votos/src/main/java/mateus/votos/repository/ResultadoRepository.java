@@ -10,12 +10,22 @@ import java.sql.SQLException;
 
 import org.springframework.stereotype.Repository;
 
+/**
+ * Repositório para gerenciar as operações de persistência relacionadas ao
+ * Resultado.
+ *
+ * Este repositório utiliza JDBC para interagir com um banco de dados SQLite.
+ */
 @Repository
 public class ResultadoRepository {
 
     private Connection connection;
     private PreparedStatement preparedStatement;
 
+    /**
+     * Construtor para inicializar a conexão com o banco de dados e criar a tabela
+     * resultado se não existir.
+     */
     public ResultadoRepository() {
         try {
             this.connection = DriverManager.getConnection("jdbc:sqlite:src/main/resources/votos.db");
@@ -25,6 +35,11 @@ public class ResultadoRepository {
         }
     }
 
+    /**
+     * Cria a tabela resultado no banco de dados se ela não existir.
+     *
+     * @throws SQLException Caso ocorra um erro ao executar a criação da tabela.
+     */
     private void createTable() throws SQLException {
         String sql = "CREATE TABLE IF NOT EXISTS resultado (" +
                 "id_pauta INTEGER PRIMARY KEY, " +
@@ -35,6 +50,14 @@ public class ResultadoRepository {
         preparedStatement.executeUpdate();
     }
 
+    /**
+     * Insere um novo Resultado no banco de dados.
+     *
+     * @param resultadoDTO O objeto ResultadoDTO contendo os detalhes do resultado a
+     *                     ser salvo.
+     * @return O objeto ResultadoDTO com os detalhes inseridos.
+     * @throws SQLException Caso ocorra um erro ao executar a inserção.
+     */
     public ResultadoDTO save(ResultadoDTO resultadoDTO) throws SQLException {
         String sql = "INSERT INTO resultado (id_pauta, votos_sim, votos_nao) VALUES (?, ?, ?)";
         preparedStatement = connection.prepareStatement(sql);
@@ -45,6 +68,14 @@ public class ResultadoRepository {
         return resultadoDTO;
     }
 
+    /**
+     * Busca um Resultado pelo ID da Pauta.
+     *
+     * @param idPauta O ID da Pauta para a qual se deseja obter o resultado.
+     * @return Um objeto ResultadoDTO contendo os detalhes do resultado, ou null se
+     *         não encontrado.
+     * @throws SQLException Caso ocorra um erro ao executar a consulta.
+     */
     public ResultadoDTO findByIdPauta(Long idPauta) throws SQLException {
         String sql = "SELECT * FROM resultado WHERE id_pauta = ?";
         preparedStatement = connection.prepareStatement(sql);
@@ -60,6 +91,17 @@ public class ResultadoRepository {
         return null;
     }
 
+    /**
+     * Atualiza os resultados de votos no banco de dados.
+     *
+     * Este método calcula a soma dos votos "SIM" e "NÃO" para cada pauta e atualiza
+     * a tabela resultado com esses valores.
+     *
+     * NOTE: Isso deve ser chamado de tempo em tempo, e não a cada operação.
+     * Porque ele faz uma varredura completa na tabela de votos.
+     *
+     * @throws SQLException Caso ocorra um erro ao executar a atualização.
+     */
     public void update() throws SQLException {
         String sql = "SELECT id_pauta, " +
                 "SUM(CASE WHEN voto = 'SIM' THEN 1 ELSE 0 END) AS votos_sim, " +

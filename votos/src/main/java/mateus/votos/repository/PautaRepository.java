@@ -12,6 +12,11 @@ import org.springframework.stereotype.Repository;
 import mateus.votos.dto.PautaDTO;
 import mateus.votos.model.Pauta;
 
+/**
+ * Repositório para gerenciar as operações de persistência relacionadas à Pauta.
+ *
+ * Este repositório utiliza JDBC para interagir com um banco de dados SQLite.
+ */
 @Repository
 public class PautaRepository {
 
@@ -19,8 +24,8 @@ public class PautaRepository {
     private PreparedStatement preparedStatement;
 
     /**
-     * Constructor that initializes the database connection and creates the pauta
-     * table if it does not exist.
+     * Construtor para inicializar a conexão com o banco de dados e criar a
+     * tabela pauta se não existir.
      */
     public PautaRepository() {
         try {
@@ -32,9 +37,9 @@ public class PautaRepository {
     }
 
     /**
-     * Creates the pauta table if it does not exist.
+     * Cria a tabela pauta no banco de dados se ela não existir.
      *
-     * @throws SQLException If there is an error during the database operation.
+     * @throws SQLException Caso ocorra um erro ao executar a criação da tabela.
      */
     private void createTable() throws SQLException {
         String sql = "CREATE TABLE IF NOT EXISTS pauta (" +
@@ -48,11 +53,14 @@ public class PautaRepository {
     }
 
     /**
-     * * Saves a new Pauta to the database.
+     * Insere uma nova Pauta no banco de dados.
      *
-     * @param pautaDTO The DTO containing the details of the Pauta to be saved.
-     * @return The saved Pauta object with its generated ID.
-     * @throws SQLException If there is an error during the database operation.
+     * @param pautaDTO O objeto PautaDTO contendo os detalhes da pauta a ser salva.
+     * @return O objeto Pauta com os detalhes inseridos, incluindo o ID gerado pelo
+     *         banco de dados.
+     * @throws SQLException Se ocorrer um erro durante a operação de inserção no
+     *                      banco de
+     *                      dados.
      */
     public Pauta save(PautaDTO pautaDTO) throws SQLException {
         String sql = "INSERT INTO pauta (name, content, status) VALUES (?, ?, ?)";
@@ -71,11 +79,13 @@ public class PautaRepository {
     }
 
     /**
-     * Updates an existing Pauta in the database.
+     * Atualiza os detalhes de uma Pauta existente no banco de dados.
      *
-     * @param pauta The Pauta object containing the updated details.
-     * @return The updated Pauta object.
-     * @throws SQLException If there is an error during the database operation.
+     * @param pauta O objeto Pauta contendo os detalhes a serem atualizados.
+     * @return O objeto Pauta atualizado.
+     * @throws SQLException Se ocorrer um erro durante a operação de atualização no
+     *                      banco de
+     *                      dados ou se a pauta não for encontrada.
      */
     public Pauta update(Pauta pauta) throws SQLException {
         String sql = "UPDATE pauta SET name = ?, content = ?, status = ? WHERE id = ?";
@@ -94,10 +104,13 @@ public class PautaRepository {
     }
 
     /**
-     * Retrieves all Pautas from the database that are not closed or deleted.
+     * Obtém todas as Pautas do banco de dados que não estão fechadas ou
+     * deletadas.
      *
-     * @return A array of Pauta objects.
-     * @throws SQLException If there is an error during the database operation.
+     * @return Uma lista de objetos Pauta que representam todas as pautas ativas.
+     * @throws SQLException Se ocorrer um erro durante a operação de consulta no
+     *                      banco de
+     *                      dados.
      */
     public ArrayList<Pauta> findAll() throws SQLException {
         String sql = "SELECT * FROM pauta WHERE status not in ('CLOSED', 'DELETED')";
@@ -118,12 +131,12 @@ public class PautaRepository {
     }
 
     /**
-     * Retrieves a Pauta by its ID from the database.
+     * Obtém uma Pauta pelo seu ID do banco de dados.
      *
-     * @param id The ID of the Pauta to be retrieved.
+     * @param id O id da pauta a ser recuperada.
      * @return The Pauta object with the specified ID.
-     * @throws SQLException If there is an error during the database operation or if
-     *                      the Pauta is not found.
+     * @throws SQLException Se ocorrer um erro durante a operação de consulta no
+     *                      banco de dados ou se a pauta não for encontrada.
      */
     public Pauta findById(Long id) throws SQLException {
         String sql = "SELECT * FROM pauta WHERE id = ? AND status not in ('CLOSED', 'DELETED')";
@@ -143,16 +156,15 @@ public class PautaRepository {
 
     @Deprecated
     /**
-     * Retrieves a Pauta by its name from the database.
+     * Obtém uma Pauta pelo seu nome do banco de dados.
      *
-     * This method does not consider if there are multiple Pautas with the same
-     * name. It will return the first Pauta found with the specified name that is
-     * not closed or deleted.
+     * Esse método não leva em consiferação que multiplas pautas podem ter o
+     * mesmo nome.
      *
-     * @param name The name of the Pauta to be retrieved.
-     * @return The Pauta object with the specified name.
-     * @throws SQLException If there is an error during the database operation or if
-     *                      the Pauta is not found.
+     * @param name O nome da pauta a ser recuperada.
+     * @return O objeto Pauta correspondente ao nome fornecido.
+     * @throws SQLException Se ocorrer um erro durante a operação de consulta no
+     *                      banco de dados ou se a pauta não for encontrada.
      */
     public Pauta findByName(String name) throws SQLException {
         String sql = "SELECT * FROM pauta WHERE name = ? AND status not in ('CLOSED', 'DELETED')";
@@ -171,14 +183,17 @@ public class PautaRepository {
     }
 
     /**
-     * Deletes a Pauta by its ID from the database.
+     * Marca uma Pauta como deletada no banco de dados.
+     * Não remove o registro.
      *
-     * This method marks the Pauta as deleted by updating its status to 'DELETED'.
-     * It does not physically remove the record from the database.
+     * Talvez possa ser implementado um método que limpe os registros
+     * de tempo em tempo.
      *
-     * @param id The ID of the Pauta to be deleted.
-     * @throws SQLException If there is an error during the database operation or if
-     *                      the Pauta is not found.
+     * Ou mova para um armazenamento de backup.
+     *
+     * @param id O ID da pauta a ser deletada.
+     * @throws SQLException Se ocorrer um erro durante a operação de atualização no
+     *                      banco de dados ou se a pauta não for encontrada.
      */
     public void deleteById(Long id) throws SQLException {
         String sql = "UPDATE pauta SET status = 'DELETED' WHERE id = ?";

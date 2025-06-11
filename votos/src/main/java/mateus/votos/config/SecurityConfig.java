@@ -5,6 +5,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
+/**
+ * As configurações de segurança foram desativadas para permitir o acesso
+ * irrestrito ao sistema de votação. Como sujerido pelas instruções do desafio.
+ */
 @Configuration
 public class SecurityConfig {
     @Bean

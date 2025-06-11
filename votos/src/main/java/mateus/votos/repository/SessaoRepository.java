@@ -12,12 +12,22 @@ import org.springframework.stereotype.Repository;
 import mateus.votos.dto.SessaoDTO;
 import mateus.votos.model.Sessao;
 
+/**
+ * Repositório para gerenciar as operações de persistência relacionadas à
+ * Sessão.
+ *
+ * Este repositório utiliza JDBC para interagir com um banco de dados SQLite.
+ */
 @Repository
 public class SessaoRepository {
 
     private Connection connection;
     private PreparedStatement preparedStatement;
 
+    /**
+     * Construtor para inicializar a conexão com o banco de dados e criar a
+     * tabela sessao se não existir.
+     */
     public SessaoRepository() {
         try {
             // TODO:
@@ -29,6 +39,11 @@ public class SessaoRepository {
         }
     }
 
+    /**
+     * Cria a tabela sessao no banco de dados se ela não existir.
+     *
+     * @throws SQLException Caso ocorra um erro ao executar a criação da tabela.
+     */
     private void createTable() throws SQLException {
         String sql = "CREATE TABLE IF NOT EXISTS sessao (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -40,6 +55,15 @@ public class SessaoRepository {
         preparedStatement.executeUpdate();
     }
 
+    /**
+     * Insere uma nova Sessão no banco de dados.
+     *
+     * @param sessaoDTO O objeto SessaoDTO contendo os detalhes da sessão a ser
+     *                  salva.
+     * @return O objeto Sessao com os detalhes inseridos, incluindo o ID gerado pelo
+     *         banco de dados.
+     * @throws SQLException Caso ocorra um erro ao executar a inserção.
+     */
     public Sessao save(SessaoDTO sessaoDTO) throws SQLException {
         String sql = "INSERT INTO sessao (id_pauta, data_inicio, data_fim) VALUES (?, ?, ?)";
         preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
@@ -57,6 +81,12 @@ public class SessaoRepository {
         }
     }
 
+    /**
+     * Recupera todas as sessões do banco de dados.
+     *
+     * @return Uma lista de objetos Sessao representando todas as sessões.
+     * @throws SQLException Caso ocorra um erro ao executar a consulta.
+     */
     public ArrayList<Sessao> findAll() throws SQLException {
         String sql = "SELECT * FROM sessao";
         preparedStatement = connection.prepareStatement(sql);
@@ -70,6 +100,14 @@ public class SessaoRepository {
         return sessoes;
     }
 
+    /**
+     * Recupera uma sessão pelo ID.
+     *
+     * @param id O ID da sessão a ser recuperada.
+     * @return O objeto Sessao correspondente ao ID fornecido.
+     * @throws SQLException Caso ocorra um erro ao executar a consulta ou se a
+     *                      sessão não for encontrada.
+     */
     public Sessao findById(Long id) throws SQLException {
         String sql = "SELECT * FROM sessao WHERE id = ?";
         preparedStatement = connection.prepareStatement(sql);
@@ -84,6 +122,12 @@ public class SessaoRepository {
         }
     }
 
+    /**
+     * Exclui uma sessão pelo ID.
+     *
+     * @param id O ID da sessão a ser excluída.
+     * @throws SQLException Caso ocorra um erro ao executar a exclusão.
+     */
     public void deleteById(Long id) throws SQLException {
         String sql = "DELETE FROM sessao WHERE id = ?";
         preparedStatement = connection.prepareStatement(sql);
@@ -91,6 +135,13 @@ public class SessaoRepository {
         preparedStatement.executeUpdate();
     }
 
+    /**
+     * Atualiza uma sessão existente no banco de dados.
+     *
+     * @param sessao O objeto Sessao contendo os detalhes atualizados da sessão.
+     * @return O objeto Sessao atualizado.
+     * @throws SQLException Caso ocorra um erro ao executar a atualização.
+     */
     public Sessao update(Sessao sessao) throws SQLException {
         String sql = "UPDATE sessao SET id_pauta = ?, data_inicio = ?, data_fim = ? WHERE id = ?";
         preparedStatement = connection.prepareStatement(sql);
