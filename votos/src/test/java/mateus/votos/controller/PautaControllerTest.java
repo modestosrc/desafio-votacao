@@ -14,7 +14,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.List;
 import java.util.ArrayList;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -79,13 +78,21 @@ class PautaControllerTest {
     @Test
     @DisplayName("Deve listar todas as pautas")
     void getAllPautas_success() throws Exception {
-        Pauta pauta = new Pauta(1L, "Pauta1", "Conteudo1", "ABERTA");
-        Mockito.when(pautaService.getPautaAll()).thenReturn(new ArrayList<>(List.of(pauta)));
+        ArrayList<Pauta> pautas = new ArrayList<>();
+        pautas.add(new Pauta(1L, "Pauta1", "Conteudo1", "ABERTA"));
+        pautas.add(new Pauta(2L, "Pauta2", "Conteudo2", "FECHADA"));
+
+        Mockito.when(pautaService.getPautaAll()).thenReturn(pautas);
 
         mockMvc.perform(get("/pautas"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").value(1L))
-                .andExpect(jsonPath("$[0].name").value("Pauta1"));
+                .andExpect(jsonPath("$[0].name").value("Pauta1"))
+                .andExpect(jsonPath("$[0].status").value("ABERTA"))
+                .andExpect(jsonPath("$[1].id").value(2L))
+                .andExpect(jsonPath("$[1].name").value("Pauta2"))
+                .andExpect(jsonPath("$[1].status").value("FECHADA"));
+
     }
 
     @Test
