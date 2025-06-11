@@ -1,33 +1,29 @@
-name: CI
+name: Java CI
 
 on:
   push:
-    branches: [main, master]
+    branches: [ main ]
   pull_request:
-    branches: [main, master]
+    branches: [ main ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout código
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Java
+      - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '24'
+          java-version: '17'
 
-      - name: Cache dependências Maven
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
+      - name: Build with Maven Wrapper
+        working-directory: votos
+        run: ./mvnw clean install
 
-      - name: Build e Teste com Maven
-        run: ./mvnw clean verify
+      - name: Run tests with Maven Wrapper
+        working-directory: votos
+        run: ./mvnw test
