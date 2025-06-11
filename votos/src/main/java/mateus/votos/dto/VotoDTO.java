@@ -2,20 +2,30 @@ package mateus.votos.dto;
 
 public class VotoDTO {
     private String cpf;
-    private int idPauta;
+    private Long idPauta;
     private String voto;
 
-    public VotoDTO(String cpf, int idPauta, String voto) {
+    public VotoDTO(String cpf, Long idPauta, String voto) {
         this.cpf = cpf;
         this.idPauta = idPauta;
         this.voto = voto;
+    }
+
+    public VotoDTO(String cpf, Long idPauta) {
+        this.cpf = cpf;
+        this.idPauta = idPauta;
+        this.voto = null;
+    }
+
+    public VotoDTO() {
+        // For Jackson
     }
 
     public String getCpf() {
         return cpf;
     }
 
-    public int getIdPauta() {
+    public Long getIdPauta() {
         return idPauta;
     }
 
