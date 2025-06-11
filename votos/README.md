@@ -10,6 +10,10 @@ Maven Wrapper incluído no projeto.
 $ ./mvnw spring-boot:run
 ```
 
+Ou se preferir, o jar está disponível em release no GitHub.
+
+```bash
+
 ## Testando a aplicação
 Para testar a aplicação, você pode usar o Swagger UI, que está disponível durante a execução da aplicação.
 
