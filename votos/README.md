@@ -1,5 +1,14 @@
 # Desafio de Programação - Votos
 
+## TODO
+- Exposição direta de entidades na API, sem uso de DTOs;
+- Validações feitas apenas via banco de dados, sem uso de anotações como @Valid;
+- Ausência de mapeamentos relacionais nas entidades e uso limitado do JPA;
+- Tratamento de exceções feito manualmente, sem handler global;
+- Lógica de negócio concentrada na camada de repositório;
+- Problemas em fluxos lógicos (como updates sem alterações);
+- Testes restritos à camada de controller, sem cobertura de serviços ou integração.
+
 ## Executando a aplicação
 
 Ela não possui dependências externas. Então, para executá-la, basta usar o 
